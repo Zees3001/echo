@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+from cmds import chantools
 import random
 
 description = '''An example bot to showcase the discord.ext.commands extension
@@ -9,9 +10,17 @@ bot = commands.Bot(command_prefix='?', description=description)
 
 @bot.event
 async def on_ready():
-    print('Logged in as')
-    print(bot.user.name)
-    print(bot.user.id)
+    users = len(set(bot.get_all_members()))
+    servers = len(bot.servers)
+    channels = len([c for c in bot.get_all_channels()])
+
+    print('------')
+    print("{} is now online. ID: {}".format(bot.user.name, bot.user.id))
+    print('------')
+    print("Connected to:")
+    print("{} servers".format(servers))
+    print("{} channels".format(channels))
+    print("{} users".format(users))
     print('------')
 
 @bot.command()
@@ -49,7 +58,7 @@ async def joined(member : discord.Member):
 
 @bot.group(pass_context=True)
 async def cool(ctx):
-    """Says if a user is cool.
+    """Says if a user is cool.?cool
     In reality this just checks if a subcommand is being invoked.
     """
     if ctx.invoked_subcommand is None:
